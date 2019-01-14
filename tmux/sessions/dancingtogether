@@ -1,0 +1,6 @@
+new-session -s DT -n shell zsh
+
+new-window -n localhost -t 2 zsh
+split-window -t 2 -p 50 zsh
+
+new-window -n server -t 3 zsh
