@@ -1,89 +1,58 @@
-#include <cassert>
-#include <map>
-#include <string>
+// g++ -std=c++17 validate_parens.cpp && ./a.out
 
-enum class ParenType {
-    None = 0,
-    Paren,
-    CurlyBrace,
-    Bracket,
+#include <array>
+#include <cassert>
+#include <functional>
+#include <string_view>
+
+enum ParenType {
+  ParenTypeParen = 0,
+  ParenTypeCurlyBrace,
+  ParenTypeBracket,
 };
 
-bool has_balanced_parens(const std::string& string);
-ParenType update_paren_map(std::map<ParenType, int>& paren_map, const char c);
+// Checks if a string has matching parentheses.
+//
+// Examples:
+// has_balanced_parens2("{()[]}") == true
+// has_balanced_parens2(")") == false
+// has_balanced_parens2("())") == false
+// has_balanced_parens2("{())") == false
+bool has_balanced_parens2(std::string_view str) {
+  std::array paren_type_counts{0, 0, 0};
+  for (auto c : str) {
+    if (c == '(') {
+      ++paren_type_counts[ParenTypeParen];
+    } else if (c == ')') {
+      if (paren_type_counts[ParenTypeParen] <= 0) return false;
+      --paren_type_counts[ParenTypeParen];
+    } else if (c == '{') {
+      ++paren_type_counts[ParenTypeCurlyBrace];
+    } else if (c == '}') {
+      if (paren_type_counts[ParenTypeCurlyBrace] <= 0) return false;
+      --paren_type_counts[ParenTypeCurlyBrace];
+    } else if (c == '[') {
+      ++paren_type_counts[ParenTypeBracket];
+    } else if (c == ']') {
+      if (paren_type_counts[ParenTypeBracket] <= 0) return false;
+      --paren_type_counts[ParenTypeBracket];
+    }
+  }
 
-int main()
-{
-    const char* s1 = "()";
-    const char* s2 = ")";
-    const char* s3 = "))";
-    const char* s4 = "(()";
-    const char* s5 = "(()()(((())()()())()))))";
-    const char* s6 = "(((((()()))()())()))(()())";
-
-    assert(has_balanced_parens(s1));
-    assert(!has_balanced_parens(s2));
-    assert(!has_balanced_parens(s3));
-    assert(!has_balanced_parens(s4));
-    assert(!has_balanced_parens(s5));
-    assert(has_balanced_parens(s6));
+  return std::all_of(paren_type_counts.cbegin(), paren_type_counts.cend(),
+                     [](int count) { return count == 0; });
 }
 
+int main() {
+  // Just parentheses
+  assert(has_balanced_parens2("()"));
+  assert(!has_balanced_parens2(")"));
+  assert(!has_balanced_parens2("(()"));
+  assert(has_balanced_parens2(""));
 
-bool has_balanced_parens(const std::string& string)
-{
-    if ((string.size() & 1) != 0)
-    {
-        return false;
-    }
-
-    std::map<ParenType, int> paren_map = {
-        {ParenType::Paren, 0},
-        {ParenType::CurlyBrace, 0},
-        {ParenType::Bracket, 0},
-    };
-
-    for (const auto& c : string)
-    {
-        const ParenType paren = update_paren_map(paren_map, c);
-        if ((paren != ParenType::None) && paren_map[paren] < 0)
-        {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-ParenType update_paren_map(std::map<ParenType, int>& paren_map, const char c)
-{
-    switch (c)
-    {
-    case '(':
-        ++paren_map[ParenType::Paren];
-        return ParenType::Paren;
-
-    case ')':
-        --paren_map[ParenType::Paren];
-        return ParenType::Paren;
-
-    case '{':
-        ++paren_map[ParenType::CurlyBrace];
-        return ParenType::CurlyBrace;
-
-    case '}':
-        --paren_map[ParenType::CurlyBrace];
-        return ParenType::CurlyBrace;
-
-    case '[':
-        ++paren_map[ParenType::Bracket];
-        return ParenType::Bracket;
-
-    case ']':
-        --paren_map[ParenType::Bracket];
-        return ParenType::Bracket;
-
-    default:
-        return ParenType::None;
-    }
+  // Mix parentheses, curly braces, and brackets
+  assert(has_balanced_parens2("{()}[]"));
+  assert(!has_balanced_parens2("{()"));
+  assert(!has_balanced_parens2("){}"));
+  assert(!has_balanced_parens2("(()]"));
 }
