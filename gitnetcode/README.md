@@ -8,5 +8,5 @@ examples.
 
 ```shell
 pip install --user pytest
-pytest gitnetcode_tests.py
+pytest gitnetcode_test.py
 ```

@@ -1,8 +1,0 @@
-#!/bin/bash
-
-find . -name .git -type d -prune | while read d; do
-   cd "$d"/..
-   pwd
-   echo "$PWD >" git pull
-   cd "$OLDPWD"
-done

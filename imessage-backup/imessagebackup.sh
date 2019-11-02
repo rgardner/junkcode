@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Bash Script By Matthieu Riegler - http://matthieu.riegler.fr
 # Licence CC-BY 0 
 #
