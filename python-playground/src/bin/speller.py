@@ -13,4 +13,9 @@ def train(features):
     return model
 
 
-NWORDS = train(words(open("big.txt").read()))
+def main():
+    NWORDS = train(words(open("big.txt").read()))
+
+
+if __name__ == "__main__":
+    main()

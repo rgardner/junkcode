@@ -10,4 +10,4 @@ lint:
 	pipenv run mypy
 
 test:
-	pipenv run pytest --cov
+	pipenv run pytest --cov --doctest-modules

@@ -66,3 +66,61 @@ def test_sorted_operators():
     sorted_values = sorted(x.items(), key=operator.itemgetter(1))
     assert sorted_values == [(0, 0), (2, 1), (1, 2), (4, 3), (3, 4)]
 
+
+def chunk_read_binary(filename, chunk_size=4096):
+    """Read chunks of a binary file.
+
+    Thanks to /u/totally_the_OP
+    http://www.reddit.com/r/Python/comments/34cdfm/what_are_your_favorite_little_tricks/cqtlwv0
+    """
+    with open(filename, "rb") as f:
+        for chunk in iter(lambda: f.read(chunk_size), ""):
+            pass
+
+
+def cli_select_log_level():
+    """Use repeatable -v and -q to select the logging level.
+
+    Thanks to /u/masklinn
+
+    Example:
+        script -vv  -> DEBUG
+        script -v   -> INFO
+        script      -> WARNING
+        script -q   -> ERROR
+        script -qq  -> CRITICAL
+        script -qqq -> no logging at all
+    """
+    import argparse
+    import logging
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-v", "--verbose", action="count", default=0)
+    parser.add_argument("-q", "--quiet", action="count", default=0)
+    args = parser.parse_args()
+
+    logging_level = logging.WARN + 10 * args.quiet - 10 * args.verbose
+
+
+def loading():
+    """Draw bars and pipes loading indicators using carriage returns."""
+    import time
+
+    while True:
+        for char in ["/", "-", "\\", "|", "/", "-", "\\", "|"]:
+            print(char, end="\r", flush=True)
+            time.sleep(0.1)
+
+
+def tuple_op(a, b, op):
+    """Perform operation on two tuples.
+
+    >>> import operator
+    >>> tuple_op((0, 1), (2, 3), operator.add)
+    (2, 4)
+    >>> tuple_op(1, 2, operator.add)
+    Traceback (most recent call last):
+        ...
+    TypeError: zip argument #1 must support iteration
+    """
+    return tuple([op(item1, item2) for item1, item2 in zip(a, b)])

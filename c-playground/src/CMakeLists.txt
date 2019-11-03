@@ -1,6 +1,11 @@
 find_package(Threads)
 
-set(cPlaygroundSources base/test_main.c move_last.c signal.c test_suites.h)
+set(cPlaygroundSources
+    base/test_main.c
+    endian.c
+    move_last.c
+    signal.c
+    test_suites.h)
 
 add_executable(cPlaygroundTests ${cPlaygroundSources})
 target_compile_options(cPlaygroundTests PRIVATE ${C_PLAYGROUND_C_FLAGS_COMMON})

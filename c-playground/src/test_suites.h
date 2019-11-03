@@ -3,6 +3,7 @@
 
 #include <check.h>
 
+Suite* make_endian_suite();
 Suite* make_move_last_suite();
 Suite* make_signal_suite();
 
