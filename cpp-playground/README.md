@@ -2,27 +2,35 @@
 
 ## Getting Started
 
+### Prerequisites
+
+```sh
+pipx install invoke
+```
+
 ### Building
 
 ```sh
-mkdir build
-cd build
-cmake -GNinja -DCMAKE_BUILD_TYPE=<Debug or Release> ..
-cmake --build . --target run
+invoke setup [--release] [--lint]
+invoke test [--release]
 ```
 
 ### Formatting
 
 ```sh
-cmake --build . --target format
+invoke format [--release]
 ```
 
 ### Linting
 
 ```sh
-cmake -GNinja \
-  -DCMAKE_BUILD_TYPE=<Debug or Release> \
-  "-DCMAKE_CXX_CLANG_TIDY=/usr/bin/clang-tidy" \
-  ..
-cmake --build .
+invoke lint
+```
+
+### Using Docker
+
+```sh
+invoke docker-build docker-run
+# Now on the guest machine
+invoke setup test lint
 ```
