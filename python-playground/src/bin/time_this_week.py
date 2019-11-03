@@ -7,19 +7,22 @@ month/day, start, end
 """
 
 from __future__ import print_function
-from datetime import datetime
+
 import sys
+from datetime import datetime
 
 # The number of hours you want to work in a given week.
 TARGET_HOURS_PER_WEEK = 35.0
 
 THIS_YEAR = datetime.today().year
 
+
 def parse_time(time):
     if ":" in time:
         return datetime.strptime(time, "%H:%M")
     else:
         return datetime.strptime(time, "%H")
+
 
 if len(sys.argv) != 2:
     print("time_this_week.py <hours.csv>")
@@ -34,15 +37,15 @@ with open(sys.argv[1]) as input_file:
     input_file.readline()
 
     for line in input_file:
-        data = line.strip().split(',')
+        data = line.strip().split(",")
         if len(data) != 3:
             # Ensure valid data.
             continue
 
-        date, start, end = data
+        date_str, start, end = data
 
         # Parse date
-        month, day = date.split('/')
+        month, day = date_str.split("/")
         date = datetime(THIS_YEAR, int(month), int(day))
         if date.isocalendar()[1] != this_week:
             # Skip data not from this work week.

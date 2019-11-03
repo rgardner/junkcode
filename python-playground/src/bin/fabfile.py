@@ -1,8 +1,9 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
+
 from fabric.api import env, run
 
 env.use_ssh_config = True
 
 
 def host_type():
-    run('uname -s')
+    run("uname -s")

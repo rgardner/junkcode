@@ -8,4 +8,5 @@ def fib(n: int) -> Iterator[int]:
         a, b = b, a + b
 
 
-print(list(fib(5)))
+def test_fib():
+    assert list(fib(5)) == [0, 1, 1, 2, 3]

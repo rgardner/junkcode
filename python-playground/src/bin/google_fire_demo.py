@@ -1,5 +1,6 @@
 import fire
 
+
 class Calculator:
     """A simple calculator class."""
 
@@ -7,5 +8,5 @@ class Calculator:
         return 2 * number
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     fire.Fire(Calculator)
