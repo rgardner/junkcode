@@ -1,0 +1,7 @@
+---
+BasedOnStyle: Google
+---
+Language: Cpp
+FixNamespaceComments: true
+IncludeBlocks: Preserve
+---

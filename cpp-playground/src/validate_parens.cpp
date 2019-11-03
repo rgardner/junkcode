@@ -1,9 +1,9 @@
-// g++ -std=c++17 validate_parens.cpp && ./a.out
-
 #include <array>
 #include <cassert>
 #include <functional>
 #include <string_view>
+
+#include <catch2/catch.hpp>
 
 enum ParenType {
   ParenTypeParen = 0,
@@ -43,16 +43,16 @@ bool has_balanced_parens2(std::string_view str) {
                      [](int count) { return count == 0; });
 }
 
-int main() {
-  // Just parentheses
-  assert(has_balanced_parens2("()"));
-  assert(!has_balanced_parens2(")"));
-  assert(!has_balanced_parens2("(()"));
-  assert(has_balanced_parens2(""));
+TEST_CASE("validate_parens_just_parens_test", "[validate_parens]") {
+  CHECK(has_balanced_parens2("()"));
+  CHECK(!has_balanced_parens2(")"));
+  CHECK(!has_balanced_parens2("(()"));
+  CHECK(has_balanced_parens2(""));
+}
 
-  // Mix parentheses, curly braces, and brackets
-  assert(has_balanced_parens2("{()}[]"));
-  assert(!has_balanced_parens2("{()"));
-  assert(!has_balanced_parens2("){}"));
-  assert(!has_balanced_parens2("(()]"));
+TEST_CASE("validate_parens_mixed_parens_test", "[validate_parens]") {
+  CHECK(has_balanced_parens2("{()}[]"));
+  CHECK(!has_balanced_parens2("{()"));
+  CHECK(!has_balanced_parens2("){}"));
+  CHECK(!has_balanced_parens2("(()]"));
 }
