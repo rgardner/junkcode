@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from nltk.corpus.reader.wordnet import Synset
 from nltk.corpus import wordnet as wn
 
 

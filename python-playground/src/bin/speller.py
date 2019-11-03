@@ -14,7 +14,7 @@ def train(features):
 
 
 def main():
-    NWORDS = train(words(open("big.txt").read()))
+    print(train(words(open("big.txt").read())))
 
 
 if __name__ == "__main__":

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 """
 Interesting functions from Python's stdlib
 """
@@ -78,7 +79,7 @@ def chunk_read_binary(filename, chunk_size=4096):
             pass
 
 
-def cli_select_log_level():
+def cli_select_log_level() -> int:
     """Use repeatable -v and -q to select the logging level.
 
     Thanks to /u/masklinn
@@ -100,6 +101,7 @@ def cli_select_log_level():
     args = parser.parse_args()
 
     logging_level = logging.WARN + 10 * args.quiet - 10 * args.verbose
+    return logging_level
 
 
 def loading():

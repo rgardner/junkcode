@@ -1,7 +1,11 @@
 # =============================
 # Define targets
 # =============================
-set(cppPlaygroundSources base/main.cpp async.cpp validate_parens.cpp)
+set(cppPlaygroundSources
+    base/main.cpp
+    async.cpp
+    swap_without_temp.cpp
+    validate_parens.cpp)
 
 add_executable(CppPlayground_main ${cppPlaygroundSources})
 add_executable(CppPlayground::main ALIAS CppPlayground_main)
