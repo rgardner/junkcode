@@ -22,7 +22,9 @@ fn getname(doc: &str) -> Result<String, String> {
     let json = Json::from_str(doc).map_err(|e| format!("Failed to parse JSON: {}", e))?;
     let root = json.as_object().ok_or("Root is not an object.")?;
     let name_field = root.get("name").ok_or("No field 'name'.")?;
-    let name = name_field.as_string().ok_or("Field 'name' is not a string.")?;
+    let name = name_field
+        .as_string()
+        .ok_or("Field 'name' is not a string.")?;
     Ok(name.to_string())
 }
 

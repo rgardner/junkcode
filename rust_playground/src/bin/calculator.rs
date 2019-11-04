@@ -16,6 +16,8 @@ fn main() {
         }
     }
 
-    println!("The program \"{}\" calculates the value {}",
-             program, accumulator);
+    println!(
+        "The program \"{}\" calculates the value {}",
+        program, accumulator
+    );
 }

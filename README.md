@@ -14,7 +14,7 @@ Andrew Tridgell](https://www.samba.org/ftp/tridge/talks/junkcode.pdf).
 
 ```sh
 python3 -m pip install pipx
-python3 -m pipx install invoke
+python3 -m pipx install invoke pipenv
 ```
 
 ### Usage
@@ -22,4 +22,6 @@ python3 -m pipx install invoke
 ```sh
 # See available tasks
 invoke --list
+# Run on all projects
+invoke setup test format lint
 ```
