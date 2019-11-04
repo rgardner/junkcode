@@ -1,0 +1,21 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: install dependencies
+      run: python3 -m pip install pipx && python3 -m pipx install invoke pipenv
+    - name: setup
+      run: invoke setup
+    - name: build
+      run: invoke build
+    - name: test
+      run: invoke test
+    - name: lint
+      run: invoke lint
