@@ -3,21 +3,20 @@
 ## Getting Started
 
 ```sh
-mkdir -p build
-cd build
-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=<Debug or Release> ..
-cmake --build . --target runTests
+invoke setup [--release] [--valgrind]
+invoke test [--release] [--valgrind]
 ```
 
 ### Linux on Docker
 
 `docker/linux/Dockerfile` is provided for Linux development in a Docker
-container. Use the provided `Makefile` to build and connect to the Linux
-container.
+container. Use the provided `docker-` tasks to build and connect to the Linux
+container:
 
 ```sh
-make build-docker-linux
-make run-docker-linux
+invoke docker-build docker-run
+# Now on the guest machine
+invoke setup test lint
 ```
 
 ### Using Valgrind
@@ -27,6 +26,6 @@ cmake's configure step to enable running the test executable under valgrind.
 For convenience, the Linux Docker container has valgrind installed.
 
 ```sh
-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=<Debug or Release> \
-      -DC_PLAYGROUND_USE_VALGRIND:BOOL=ON ..
+invoke setup --valgrind [--release]
+invoke test --valgrind [--release]
 ```
