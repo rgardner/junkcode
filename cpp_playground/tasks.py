@@ -44,8 +44,12 @@ class BuildType(Enum):
         return self.value
 
 
+def get_source_dir() -> Path:
+    return Path(os.path.dirname(os.path.abspath(__file__)))
+
+
 def get_platform_build_path(build_type: BuildType, lint: bool = False) -> Path:
-    base = Path.cwd() / "build" / str(Platform.current())
+    base = get_source_dir() / "build" / str(Platform.current())
     if lint:
         base /= "lint"
 
@@ -57,8 +61,9 @@ def setup(c, release=False, lint=False):
     build_type = BuildType.Release if release else BuildType.Debug
     build_dir = get_platform_build_path(build_type, lint)
     build_dir.mkdir(exist_ok=True, parents=True)
+    source_dir = get_source_dir()
 
-    args = f"cmake -B {build_dir} -S. -GNinja -DCMAKE_BUILD_TYPE={build_type}"
+    args = f"cmake -B{build_dir} -S{source_dir} -GNinja -DCMAKE_BUILD_TYPE={build_type}"
     if lint:
         clang_tidy_path = shutil.which("clang-tidy")
         if clang_tidy_path is None:
@@ -96,8 +101,9 @@ def format(c, release=False):
     def cmake_format(full_path):
         c.run(f"cmake-format --in-place {full_path}")
 
-    cmake_format(Path.cwd() / "CMakeLists.txt")
-    for root, dirs, files in os.walk(Path.cwd() / "src"):
+    source_dir = get_source_dir()
+    cmake_format(source_dir / "CMakeLists.txt")
+    for root, dirs, files in os.walk(source_dir / "src"):
         for f in files:
             if f == "CMakeLists.txt":
                 full_path = os.path.join(root, f)
@@ -117,9 +123,10 @@ def docker_build(c):
 
 @task
 def docker_run(c):
+    source_dir = get_source_dir()
     c.run(
         f"docker run --interactive --tty \
-		--volume {Path.cwd()}:/usr/src/cpp-playground --rm \
+		--volume {source_dir}:/usr/src/cpp-playground --rm \
 		--workdir /usr/src/cpp-playground {DOCKER_LINUX_TAG} /bin/bash",
         pty=sys.stdin.isatty(),
     )
