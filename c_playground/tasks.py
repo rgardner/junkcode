@@ -76,7 +76,7 @@ def setup(c, release=False, valgrind=False, lint=False):
 
         args.append(f"-DCMAKE_CXX_CLANG_TIDY={clang_tidy_path}")
 
-    args.append(get_source_dir())
+    args.append(str(get_source_dir()))
     with c.cd(str(build_dir)):
         c.run(" ".join(args), pty=sys.stdout.isatty())
 
