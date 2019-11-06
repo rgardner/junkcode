@@ -9,4 +9,5 @@ sudo apt-get install --yes --no-install-recommends \
 
 python3.7 -m venv junkcode-env && . junkcode-env/bin/activate
 
+python3 -m pip install --upgrade pip
 python3 -m pip install invoke pipenv

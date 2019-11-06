@@ -11,10 +11,10 @@ jobs:
       - name: install dependencies
         run: tools/scripts/install_deps_linux.sh
       - name: setup
-        run: python3 -m invoke setup
+        run: tools/scripts/run_task_in_venv.sh setup
       - name: build
-        run: python3 -m invoke build
+        run: tools/scripts/run_task_in_venv.sh build
       - name: test
-        run: python3 -m invoke test
+        run: tools/scripts/run_task_in_venv.sh test
       - name: lint
-        run: python3 -m invoke lint
+        run: tools/scripts/run_task_in_venv.sh lint
