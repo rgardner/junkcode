@@ -64,20 +64,21 @@ def setup(c, release=False, valgrind=False, lint=False):
     build_type = BuildType.Release if release else BuildType.Debug
     build_dir = get_platform_build_path(build_type, lint=lint, valgrind=valgrind)
     build_dir.mkdir(exist_ok=True, parents=True)
-    source_dir = get_source_dir()
 
-    args = f"cmake -B{build_dir} -S{source_dir} -GNinja -DCMAKE_BUILD_TYPE={build_type}"
+    args = ["cmake", "-GNinja", f"-DCMAKE_BUILD_TYPE={build_type}"]
     if valgrind:
-        args += " -DC_PLAYGROUND_USE_VALGRIND:BOOL=ON"
+        args.append("-DC_PLAYGROUND_USE_VALGRIND:BOOL=ON")
 
     if lint:
         clang_tidy_path = shutil.which("clang-tidy")
         if clang_tidy_path is None:
             raise TaskError("clang-tidy could not be found on your PATH")
 
-        args += f" -DCMAKE_CXX_CLANG_TIDY={clang_tidy_path}"
+        args.append(f"-DCMAKE_CXX_CLANG_TIDY={clang_tidy_path}")
 
-    c.run(args, pty=sys.stdout.isatty())
+    args.append(get_source_dir())
+    with c.cd(str(build_dir)):
+        c.run(" ".join(args), pty=sys.stdout.isatty())
 
 
 @task
