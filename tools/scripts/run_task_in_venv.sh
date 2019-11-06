@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+#
+# This script was created to enable the project to use a newer version of
+# Python than the system default.
 
 if [ "$#" -ne 1 ]; then
   echo "Invalid number of arguments" >&2
@@ -8,5 +11,7 @@ fi
 
 readonly task_name="$1"
 
+# Tell pipenv to create a new virtual environment if needed instead of relying
+# on the project-wide virtual environment.
 . junkcode-env/bin/activate
-python3 -m invoke "${task_name}"
+PIPENV_IGNORE_VIRTUALENVS=1 python3 -m invoke "${task_name}"
