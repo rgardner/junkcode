@@ -11,15 +11,12 @@ jobs:
       - name: install dependencies
         run: |
           sudo apt-get install python3-venv --yes --no-install-recommends
-          python3 -m pip install pipx
-          python3 -m pipx ensurepath
-          python3 -m pipx install invoke
-          python3 -m pipx install pipenv
+          python3 -m pip install invoke pipenv
       - name: setup
-        run: invoke setup
+        run: python3 -m invoke setup
       - name: build
-        run: invoke build
+        run: python3 -m invoke build
       - name: test
-        run: invoke test
+        run: python3 -m invoke test
       - name: lint
-        run: invoke lint
+        run: python3 -m invoke lint

@@ -11,30 +11,30 @@ def get_source_dir() -> Path:
 @task
 def setup(c):
     with c.cd(str(get_source_dir())):
-        c.run("pipenv install --dev")
+        c.run("python3 -m pipenv install --dev")
 
 
 @task
 def run(c, bin):
     with c.cd(str(get_source_dir())):
-        c.run(f"pipenv run python {bin}")
+        c.run(f"python3 -m pipenv run python {bin}")
 
 
 @task
 def test(c):
     with c.cd(str(get_source_dir())):
-        c.run("pipenv run pytest --cov --doctest-modules")
+        c.run("python3 -m pipenv run pytest --cov --doctest-modules")
 
 
 @task
 def format(c):
     with c.cd(str(get_source_dir())):
-        c.run("pipenv run black --target-version py37 .")
-        c.run("pipenv run isort --apply")
+        c.run("python3 -m pipenv run black --target-version py37 .")
+        c.run("python3 -m pipenv run isort --apply")
 
 
 @task
 def lint(c):
     with c.cd(str(get_source_dir())):
-        c.run("pipenv run flake8")
-        c.run("pipenv run mypy")
+        c.run("python3 -m pipenv run flake8")
+        c.run("python3 -m pipenv run mypy")
