@@ -1,5 +1,7 @@
 """Invoke tasks for C Playground."""
 
+from __future__ import annotations
+
 import enum
 from enum import Enum
 import os
@@ -25,7 +27,7 @@ class Platform(Enum):
         return self.value
 
     @staticmethod
-    def current() -> "Platform":
+    def current() -> Platform:
         if sys.platform.startswith("linux"):
             return Platform.Linux
         elif sys.platform.startswith("darwin"):
