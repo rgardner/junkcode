@@ -6,6 +6,7 @@ from enum import Enum
 import os
 import shutil
 import sys
+from typing import List
 
 
 class TaskError(RuntimeError):
@@ -29,12 +30,17 @@ class Platform(Enum):
             raise TaskError("Unsupported platform")
 
 
+def apt_get_install_packages(c, packages: List[str]):
+    packages_str = " ".join(packages)
+    c.run(f"sudo apt-get install --yes --no-install-recommends {packages_str}")
+
+
 def install_clang_tidy(c) -> str:
     """Installs clang-tidy and returns its path."""
 
     platform = Platform.current()
     if platform == platform.Linux:
-        c.run("sudo apt-get install --yes --no-install-recommends clang-tidy")
+        apt_get_install_packages(c, ["clang-tidy-6.0", "clang-tidy"])
     elif platform == platform.MacOS:
         c.run("brew install llvm")
         os.symlink("/usr/local/opt/llvm/bin/clang-tidy", "/usr/local/bin/clang-tidy")
