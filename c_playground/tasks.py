@@ -5,35 +5,21 @@ from __future__ import annotations
 import enum
 from enum import Enum
 import os
+import os.path
 from pathlib import Path
 import shutil
 import sys
 
 from invoke import task
 
+sys.path.insert(
+    1, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "tools", "build")
+)
+import buildlib
+from buildlib import Platform, TaskError
+
 
 DOCKER_LINUX_TAG = "rgardner/junkcode/c-playground/linux:latest"
-
-
-class TaskError(RuntimeError):
-    ...
-
-
-class Platform(Enum):
-    MacOS = "macos"
-    Linux = "linux"
-
-    def __str__(self):
-        return self.value
-
-    @staticmethod
-    def current() -> Platform:
-        if sys.platform.startswith("linux"):
-            return Platform.Linux
-        elif sys.platform.startswith("darwin"):
-            return Platform.MacOS
-        else:
-            raise TaskError("Unsupported platform")
 
 
 class BuildType(Enum):
@@ -61,25 +47,6 @@ def get_platform_build_path(
     return base / str(build_type)
 
 
-def install_clang_tidy(c) -> str:
-    """Installs clang-tidy and returns its path."""
-
-    platform = Platform.current()
-    if platform == platform.Linux:
-        c.run("sudo apt-get install clang-tidy")
-    elif platform == platform.MacOS:
-        c.run("brew install llvm")
-        os.symlink("/usr/local/opt/llvm/bin/clang-tidy", "/usr/local/bin/clang-tidy")
-    else:
-        raise TaskError("Unsupported platform to install clang-tidy")
-
-    clang_tidy_path = shutil.which("clang-tidy")
-    if clang_tidy_path is None:
-        raise TaskError("clang-tidy is still not installed")
-
-    return clang_tidy_path
-
-
 @task
 def setup(c, release=False, valgrind=False, lint=False):
     build_type = BuildType.Release if release else BuildType.Debug
@@ -93,7 +60,7 @@ def setup(c, release=False, valgrind=False, lint=False):
     if lint:
         clang_tidy_path = shutil.which("clang-tidy")
         if clang_tidy_path is None:
-            clang_tidy_path = install_clang_tidy(c)
+            clang_tidy_path = buildlib.install_clang_tidy(c)
 
         args.append(f"-DCMAKE_CXX_CLANG_TIDY={clang_tidy_path}")
 
