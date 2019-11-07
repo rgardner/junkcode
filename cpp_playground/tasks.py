@@ -56,17 +56,36 @@ def get_platform_build_path(build_type: BuildType, lint: bool = False) -> Path:
     return base / str(build_type)
 
 
+def install_clang_tidy(c) -> str:
+    """Installs clang-tidy and returns its path."""
+
+    platform = Platform.current()
+    if platform == platform.Linux:
+        c.run("sudo apt-get install clang-tidy")
+    elif platform == platform.MacOS:
+        c.run("brew install llvm")
+        os.symlink("/usr/local/opt/llvm/bin/clang-tidy", "/usr/local/bin/clang-tidy")
+    else:
+        raise TaskError("Unsupported platform to install clang-tidy")
+
+    clang_tidy_path = shutil.which("clang-tidy")
+    if clang_tidy_path is None:
+        raise TaskError("clang-tidy is still not installed")
+
+    return clang_tidy_path
+
+
 @task
 def setup(c, release=False, lint=False):
     build_type = BuildType.Release if release else BuildType.Debug
     build_dir = get_platform_build_path(build_type, lint)
     build_dir.mkdir(exist_ok=True, parents=True)
 
-    args = ["cmake", "-GNinja", f"-DCMAKE_BUILD_TYPE={build_type}"]
+    args = ["cmake", "-GNinja", f"-DCMAKE_BUILD_TYPE:STRING={build_type}"]
     if lint:
         clang_tidy_path = shutil.which("clang-tidy")
         if clang_tidy_path is None:
-            raise TaskError("clang-tidy could not be found on your PATH")
+            clang_tidy_path = install_clang_tidy(c)
 
         args.append(f"-DCMAKE_CXX_CLANG_TIDY={clang_tidy_path}")
 
