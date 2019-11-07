@@ -40,7 +40,7 @@ def install_clang_tidy(c) -> str:
 
     platform = Platform.current()
     if platform == platform.Linux:
-        apt_get_install_packages(c, ["clang-tidy-6.0", "clang-tidy"])
+        apt_get_install_packages(c, ["libllvm6.0", "clang-tidy-6.0", "clang-tidy"])
     elif platform == platform.MacOS:
         c.run("brew install llvm")
         os.symlink("/usr/local/opt/llvm/bin/clang-tidy", "/usr/local/bin/clang-tidy")
