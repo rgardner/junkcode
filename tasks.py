@@ -1,9 +1,19 @@
+#!/usr/bin/env python3
+
+import os.path
+import sys
+
 from invoke import Collection, task
 
 from c_playground import tasks as c_playground_tasks
 from cpp_playground import tasks as cpp_playground_tasks
 from python_playground import tasks as python_playground_tasks
 from rust_playground import tasks as rust_playground_tasks
+
+sys.path.insert(
+    1, os.path.join(os.path.dirname(os.path.abspath(__file__)), "tools", "build")
+)
+from buildlib import ALL_PROJECTS
 
 
 @task
@@ -35,12 +45,19 @@ def format(c, release=False):
     python_playground_tasks.format(c)
 
 
-@task
-def lint(c, release=False):
-    c_playground_tasks.lint(c, release)
-    cpp_playground_tasks.lint(c, release)
-    rust_playground_tasks.lint(c)
-    python_playground_tasks.lint(c)
+@task(iterable=["projects"])
+def lint(c, projects, release=False):
+    if not projects:
+        projects = ALL_PROJECTS
+
+    if "c" in projects:
+        c_playground_tasks.lint(c, release)
+    if "cpp" in projects:
+        cpp_playground_tasks.lint(c, release)
+    if "rust" in projects:
+        rust_playground_tasks.lint(c)
+    if "python" in projects:
+        python_playground_tasks.lint(c)
 
 
 ns = Collection()

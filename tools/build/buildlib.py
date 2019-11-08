@@ -8,14 +8,16 @@ import shutil
 import sys
 from typing import List
 
+ALL_PROJECTS = ["c", "cpp", "rust", "python"]
+
 
 class TaskError(RuntimeError):
     ...
 
 
 class Platform(Enum):
-    MacOS = "macos"
-    Linux = "linux"
+    MACOS = "macOS"
+    LINUX = "linux"
 
     def __str__(self):
         return self.value
@@ -23,9 +25,9 @@ class Platform(Enum):
     @staticmethod
     def current() -> Platform:
         if sys.platform.startswith("linux"):
-            return Platform.Linux
+            return Platform.LINUX
         elif sys.platform.startswith("darwin"):
-            return Platform.MacOS
+            return Platform.MACOS
         else:
             raise TaskError("Unsupported platform")
 
@@ -39,9 +41,9 @@ def install_clang_tidy(c) -> str:
     """Installs clang-tidy and returns its path."""
 
     platform = Platform.current()
-    if platform == platform.Linux:
+    if platform == Platform.LINUX:
         apt_get_install_packages(c, ["clang-tidy"])
-    elif platform == platform.MacOS:
+    elif platform == platform.MACOS:
         c.run("brew install llvm")
         os.symlink("/usr/local/opt/llvm/bin/clang-tidy", "/usr/local/bin/clang-tidy")
     else:

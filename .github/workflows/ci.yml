@@ -17,4 +17,4 @@ jobs:
       - name: test
         run: tools/scripts/run_task_in_venv.sh test
       - name: lint
-        run: tools/scripts/run_task_in_venv.sh lint
+        run: tools/scripts/run_task_in_venv.sh lint --projects python --projects rust
