@@ -9,12 +9,11 @@ sudo add-apt-repository ppa:deadsnakes/ppa && sudo apt-get update
 
 sudo apt-get install --yes --no-install-recommends \
   build-essential \
+  clang-tidy \
   ninja-build \
   python3.7 \
   python3.7-dev \
   python3.7-venv
-
-sudo apt-get upgrade --yes
 
 if [ ! -d "${REPO_ROOT}/.venv/bin/activate" ]; then
   python3.7 -m venv "${REPO_ROOT}/.venv"
