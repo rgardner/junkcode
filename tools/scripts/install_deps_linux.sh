@@ -14,7 +14,7 @@ sudo apt-get install --yes --no-install-recommends \
   python3.7-dev \
   python3.7-venv
 
-bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 
 if [ ! -d "${REPO_ROOT}/.venv/bin/activate" ]; then
   python3.7 -m venv "${REPO_ROOT}/.venv"
