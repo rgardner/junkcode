@@ -123,6 +123,6 @@ def tuple_op(a, b, op):
     >>> tuple_op(1, 2, operator.add)
     Traceback (most recent call last):
         ...
-    TypeError: zip argument #1 must support iteration
+    TypeError: 'int' object is not iterable
     """
     return tuple([op(item1, item2) for item1, item2 in zip(a, b)])

@@ -5,9 +5,17 @@ from cpp_playground import tasks as cpp_playground_tasks
 from python_playground import tasks as python_playground_tasks
 from rust_playground import tasks as rust_playground_tasks
 
+PYTHON_DEPENDENCIES = [
+    "black==19.10b0",
+    "mypy==0.782",
+    "pipenv==2020.6.2",
+    "pylint==2.5.3",
+]
+
 
 @task
 def setup(c, release=False):
+    c.run(f"pip install {' '.join(PYTHON_DEPENDENCIES)}")
     c_playground_tasks.setup(c, release)
     cpp_playground_tasks.setup(c, release)
     python_playground_tasks.setup(c)

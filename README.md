@@ -12,10 +12,10 @@ Andrew Tridgell](https://www.samba.org/ftp/tridge/talks/junkcode.pdf).
 
 ### Prerequisites
 
-```sh
-python3 -m pip install pipx
-python3 -m pipx install invoke pipenv
-```
+1. Optional, set up a Python virtual environment
+2. Install the [Invoke](https://www.pyinvoke.org/) task runner
+   `pip install invoke`
+3. Run `invoke setup`
 
 ### Usage
 

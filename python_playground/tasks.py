@@ -12,6 +12,7 @@ def get_source_dir() -> Path:
 def setup(c):
     with c.cd(str(get_source_dir())):
         c.run("pipenv install --dev")
+        c.run("""python -c 'import nltk; nltk.download("wordnet")'""")
 
 
 @task
