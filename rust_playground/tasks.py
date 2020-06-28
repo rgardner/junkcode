@@ -31,18 +31,20 @@ def run(c, bin, release=False):
 
 
 @task
-def fmt(c, check=False):
+def fmt(c, check=False, verbose=False):
     with c.cd(str(get_source_dir())):
         args = ["cargo", "fmt"]
+        if verbose:
+            args.append("--verbose")
         if check:
             args.extend(["--", "--check"])
         c.run(" ".join(args))
 
 
 @task
-def lint(c, check=False):
+def lint(c, werror=False):
     with c.cd(str(get_source_dir())):
         args = ["cargo", "clippy", "--all"]
-        if check:
+        if werror:
             args.extend(["--", "-D", "warnings"])
         c.run(" ".join(args))
