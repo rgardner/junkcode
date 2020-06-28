@@ -4,7 +4,7 @@ on:
   pull_request:
     paths:
       - "!*"
-      - ".github/workflows/python_playground.ci.yml"
+      - ".github/workflows/python_playground_ci.yml"
       - "python_playground/**"
       - "!python_playground/.gitignore"
       - "!python_playground/**.md"
@@ -12,7 +12,7 @@ on:
     branches: [master]
     paths:
       - "!*"
-      - ".github/workflows/python_playground.ci.yml"
+      - ".github/workflows/python_playground_ci.yml"
       - "python_playground/**"
       - "!python_playground/.gitignore"
       - "!python_playground/**.md"

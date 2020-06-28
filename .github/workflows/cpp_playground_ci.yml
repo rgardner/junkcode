@@ -1,27 +1,24 @@
-name: Rust Playground
+name: C++ Playground
 
 on:
   pull_request:
     paths:
       - "!*"
-      - ".github/workflows/rust_playground.ci.yml"
-      - "rust_playground/**"
-      - "!rust_playground/.gitignore"
-      - "!rust_playground/**.md"
+      - ".github/workflows/cpp_playground_ci.yml"
+      - "cpp_playground/**"
+      - "!cpp_playground/.gitignore"
+      - "!cpp_playground/**.md"
   push:
     branches: [master]
     paths:
       - "!*"
-      - ".github/workflows/rust_playground.ci.yml"
-      - "rust_playground/**"
-      - "!rust_playground/.gitignore"
-      - "!rust_playground/**.md"
-
-env:
-  CARGO_TERM_COLOR: always
+      - ".github/workflows/cpp_playground_ci.yml"
+      - "cpp_playground/**"
+      - "!cpp_playground/.gitignore"
+      - "!cpp_playground/**.md"
 
 jobs:
-  build:
+  build_and_test:
     runs-on: ubuntu-latest
 
     steps:
@@ -33,8 +30,11 @@ jobs:
       - name: Setup
         run: |
           pip install invoke
+          cd cpp_playground && invoke setup
       - name: Build
-        run: cd rust_playground && invoke build --verbose
+        run: cd cpp_playground && invoke build
+      - name: Test
+        run: cd cpp_playground && invoke test
 
   fmt:
     runs-on: ubuntu-latest
@@ -48,8 +48,9 @@ jobs:
       - name: Setup
         run: |
           pip install invoke
+          cd cpp_playground && invoke setup
       - name: Check formatting
-        run: cd rust_playground && invoke fmt --check
+        run: cd cpp_playground && invoke fmt --check
 
   lint:
     runs-on: ubuntu-latest
@@ -63,5 +64,6 @@ jobs:
       - name: Setup
         run: |
           pip install invoke
+          cd cpp_playground && invoke setup
       - name: Lint
-        run: cd rust_playground && invoke lint --werror
+        run: cd cpp_playground && invoke lint

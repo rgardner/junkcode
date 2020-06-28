@@ -2,7 +2,11 @@
 # Preamble
 # =============================
 cmake_minimum_required(VERSION 3.12)
-project(CppPlayground VERSION 0.1.0 DESCRIPTION "C++ Playground" LANGUAGES CXX)
+project(
+  CppPlayground
+  VERSION 0.1.0
+  DESCRIPTION "C++ Playground"
+  LANGUAGES CXX)
 enable_testing()
 
 # =============================
@@ -24,7 +28,9 @@ if(NOT isMultiConfig)
   set(allowableBuildTypes Debug Release RelWithDebInfo)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "${allowableBuildTypes}")
   if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug CACHE STRING "" FORCE)
+    set(CMAKE_BUILD_TYPE
+        Debug
+        CACHE STRING "" FORCE)
   elseif(NOT CMAKE_BUILD_TYPE IN_LIST allowableBuildTypes)
     message(FATAL_ERROR "Invalid build type: ${CMAKE_BUILD_TYPE}")
   endif()
@@ -49,6 +55,7 @@ add_subdirectory(src)
 # =============================
 # Custom targets
 # =============================
-add_custom_target(run
-                  COMMAND CppPlayground::main --use-colour yes
-                  DEPENDS CppPlayground::main)
+add_custom_target(
+  run
+  COMMAND CppPlayground::main --use-colour yes
+  DEPENDS CppPlayground::main)

@@ -5,7 +5,7 @@ from __future__ import annotations
 import enum
 from enum import Enum
 import os
-from pathlib import Path
+import pathlib
 import shutil
 import sys
 
@@ -44,11 +44,11 @@ class BuildType(Enum):
         return self.value
 
 
-def get_source_dir() -> Path:
-    return Path(os.path.dirname(os.path.abspath(__file__)))
+def get_source_dir() -> pathlib.Path:
+    return pathlib.Path(os.path.dirname(os.path.abspath(__file__)))
 
 
-def get_platform_build_path(build_type: BuildType, lint: bool = False) -> Path:
+def get_platform_build_path(build_type: BuildType, lint: bool = False) -> pathlib.Path:
     base = get_source_dir() / "build" / str(Platform.current())
     if lint:
         base /= "lint"
@@ -56,8 +56,20 @@ def get_platform_build_path(build_type: BuildType, lint: bool = False) -> Path:
     return base / str(build_type)
 
 
+def run_clang_format(ctx, cpp_source_dir: pathlib.Path):
+    run_clang_format_path = (
+        get_source_dir().parent
+        / "submodules"
+        / "run-clang-format"
+        / "run-clang-format.py"
+    )
+    ctx.run(f"{run_clang_format_path} --recursive {cpp_source_dir}")
+
+
 @task
 def setup(c, release=False, lint=False):
+    c.run("pip install cmake-format==0.6.10")
+
     build_type = BuildType.Release if release else BuildType.Debug
     build_dir = get_platform_build_path(build_type, lint)
     build_dir.mkdir(exist_ok=True, parents=True)
@@ -89,12 +101,17 @@ def test(c, release=False):
 
 
 @task
-def format(c, release=False):
+def fmt(c, release=False, check=False):
     # Format C++ code
 
-    build_type = BuildType.Release if release else BuildType.Debug
-    build_dir = get_platform_build_path(build_type)
-    c.run(f"cmake --build {build_dir} --target format")
+    if check:
+        run_clang_format(c, get_source_dir() / "src")
+    else:
+        build_type = BuildType.Release if release else BuildType.Debug
+        build_dir = get_platform_build_path(build_type)
+        cpp_format_args = ["cmake", "--build", str(build_dir), "--target"]
+        cpp_format_args.append("fmt-check" if check else "fmt")
+        c.run(" ".join(cpp_format_args))
 
     # Format CMakeLists.txt files
 

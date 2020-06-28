@@ -1,0 +1,67 @@
+name: Rust Playground
+
+on:
+  pull_request:
+    paths:
+      - "!*"
+      - ".github/workflows/rust_playground_ci.yml"
+      - "rust_playground/**"
+      - "!rust_playground/.gitignore"
+      - "!rust_playground/**.md"
+  push:
+    branches: [master]
+    paths:
+      - "!*"
+      - ".github/workflows/rust_playground_ci.yml"
+      - "rust_playground/**"
+      - "!rust_playground/.gitignore"
+      - "!rust_playground/**.md"
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - name: Setup
+        run: |
+          pip install invoke
+      - name: Build
+        run: cd rust_playground && invoke build --verbose
+
+  fmt:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - name: Setup
+        run: |
+          pip install invoke
+      - name: Check formatting
+        run: cd rust_playground && invoke fmt --check
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - name: Setup
+        run: |
+          pip install invoke
+      - name: Lint
+        run: cd rust_playground && invoke lint --werror

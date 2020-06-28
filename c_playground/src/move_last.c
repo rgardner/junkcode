@@ -5,13 +5,13 @@
 
 #define ARRAYSIZE(a) (sizeof(a) / sizeof(a[0]))
 
-void swap(int* a, int* b) {
+void swap(int *a, int *b) {
   const int temp = *a;
   *a = *b;
   *b = temp;
 }
 
-void move_last(int* values, int num_values, int idx) {
+void move_last(int *values, int num_values, int idx) {
   assert(idx < num_values);
 
   for (int i = idx; i < (num_values - 1); i++) {
@@ -34,9 +34,9 @@ START_TEST(move_last_test) {
 }
 END_TEST
 
-Suite* make_move_last_suite() {
-  Suite* s = suite_create("move_last");
-  TCase* tc = tcase_create("core");
+Suite *make_move_last_suite() {
+  Suite *s = suite_create("move_last");
+  TCase *tc = tcase_create("core");
   suite_add_tcase(s, tc);
 
   tcase_add_test(tc, move_last_test);
