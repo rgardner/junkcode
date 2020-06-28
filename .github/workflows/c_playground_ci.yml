@@ -31,6 +31,7 @@ jobs:
         run: |
           pip install invoke
           cd c_playground && invoke setup
+          sudo apt-get install ninja-build
       - name: Build
         run: cd c_playground && invoke build
       - name: Test
