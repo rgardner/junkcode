@@ -29,9 +29,9 @@ jobs:
           python-version: "3.8"
       - name: Setup
         run: |
+          sudo apt-get install ninja-build
           pip install invoke
           cd cpp_playground && invoke setup
-          sudo apt-get install ninja-build
       - name: Build
         run: cd cpp_playground && invoke build
       - name: Test
