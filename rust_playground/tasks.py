@@ -11,30 +11,38 @@ def get_source_dir() -> Path:
 
 
 @task
-def build(c, release=False):
+def build(c, release=False, verbose=False):
     with c.cd(str(get_source_dir())):
+        args = ["cargo", "build"]
         if release:
-            c.run("cargo build --release")
-        else:
-            c.run("cargo build")
+            args.append("--release")
+        if verbose:
+            args.append("--verbose")
+        c.run(" ".join(args))
 
 
 @task
 def run(c, bin, release=False):
     with c.cd(str(get_source_dir())):
+        args = ["cargo", "run", "--bin", bin]
         if release:
-            c.run(f"cargo run --bin {bin} --release")
-        else:
-            c.run(f"cargo run --bin {bin}")
+            args.append("--release")
+        c.run(" ".join(args))
 
 
 @task
-def format(c):
+def fmt(c, check=False):
     with c.cd(str(get_source_dir())):
-        c.run("cargo fmt")
+        args = ["cargo", "fmt"]
+        if check:
+            args.extend(["--", "--check"])
+        c.run(" ".join(args))
 
 
 @task
-def lint(c):
+def lint(c, check=False):
     with c.cd(str(get_source_dir())):
-        c.run("cargo clippy --all")
+        args = ["cargo", "clippy", "--all"]
+        if check:
+            args.extend(["--", "-D", "warnings"])
+        c.run(" ".join(args))

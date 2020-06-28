@@ -1,0 +1,44 @@
+name: Rust Playground
+
+on:
+  pull_request:
+    paths:
+      - "!*"
+      - ".github/workflows/rust_playground.ci.yml"
+      - "rust_playground/**"
+      - "!rust_playground/.gitignore"
+      - "!rust_playground/**.md"
+  push:
+    branches: [master]
+    paths:
+      - "!*"
+      - ".github/workflows/rust_playground.ci.yml"
+      - "rust_playground/**"
+      - "!rust_playground/.gitignore"
+      - "!rust_playground/**.md"
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup
+        run: |
+          pip install invoke
+      - name: Build
+        run: cd rust_playground && invoke build --verbose
+
+  fmt:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup
+        run: |
+          pip install invoke
+      - name: Check formatting
+        run: cd rust_playground && invoke fmt --check
