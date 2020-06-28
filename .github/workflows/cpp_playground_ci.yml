@@ -48,6 +48,7 @@ jobs:
           python-version: "3.8"
       - name: Setup
         run: |
+          sudo apt-get install clang-format ninja-build
           pip install invoke
           cd cpp_playground && invoke setup
       - name: Check formatting
@@ -64,6 +65,7 @@ jobs:
           python-version: "3.8"
       - name: Setup
         run: |
+          sudo apt-get install clang-tidy ninja-build
           pip install invoke
           cd cpp_playground && invoke setup
       - name: Lint
