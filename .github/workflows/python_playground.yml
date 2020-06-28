@@ -1,0 +1,67 @@
+name: Python Playground
+
+on:
+  pull_request:
+    paths:
+      - "!*"
+      - ".github/workflows/python_playground.ci.yml"
+      - "python_playground/**"
+      - "!python_playground/.gitignore"
+      - "!python_playground/**.md"
+  push:
+    branches: [master]
+    paths:
+      - "!*"
+      - ".github/workflows/python_playground.ci.yml"
+      - "python_playground/**"
+      - "!python_playground/.gitignore"
+      - "!python_playground/**.md"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - name: Setup
+        run: |
+          pip install invoke
+          cd python_playground && invoke setup
+      - name: Test
+        run: cd python_playground && invoke test
+
+  fmt:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - name: Setup
+        run: |
+          pip install invoke
+          cd python_playground && invoke setup
+      - name: Check formatting
+        run: cd python_playground && invoke fmt --check
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - name: Setup
+        run: |
+          pip install invoke
+          cd python_playground && invoke setup
+      - name: Lint
+        run: cd python_playground && invoke lint
