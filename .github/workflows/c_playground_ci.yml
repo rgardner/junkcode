@@ -1,0 +1,74 @@
+name: C Playground
+
+on:
+  pull_request:
+    paths:
+      - "!*"
+      - ".github/workflows/c_playground_ci.yml"
+      - "c_playground/**"
+      - "!c_playground/.gitignore"
+      - "!c_playground/**.md"
+  push:
+    branches: [master]
+    paths:
+      - "!*"
+      - ".github/workflows/c_playground_ci.yml"
+      - "c_playground/**"
+      - "!c_playground/.gitignore"
+      - "!c_playground/**.md"
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - name: Setup
+        run: |
+          sudo apt-get install ninja-build
+          pip install invoke
+          cd c_playground && invoke setup
+      - name: Build
+        run: cd c_playground && invoke build
+      - name: Test
+        run: cd c_playground && invoke test
+
+  fmt:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - name: Setup
+        run: |
+          sudo apt-get install clang-format ninja-build
+          pip install invoke
+          cd c_playground && invoke setup
+      - name: Check formatting
+        run: cd c_playground && invoke fmt --check
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - name: Setup
+        run: |
+          sudo apt-get install clang-tidy ninja-build
+          pip install invoke
+          cd c_playground && invoke setup
+      - name: Lint
+        run: cd c_playground && invoke lint

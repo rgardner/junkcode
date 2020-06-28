@@ -35,9 +35,9 @@ START_TEST(signal_spawn_child_test) {
   }
 }
 
-Suite* make_signal_suite() {
-  Suite* s = suite_create("signal");
-  TCase* tc = tcase_create("core");
+Suite *make_signal_suite() {
+  Suite *s = suite_create("signal");
+  TCase *tc = tcase_create("core");
   suite_add_tcase(s, tc);
 
   tcase_add_test(tc, signal_waitpid_ignore_child_test);

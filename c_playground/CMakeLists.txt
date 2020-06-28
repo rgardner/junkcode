@@ -2,7 +2,11 @@
 # Preamble
 # =============================
 cmake_minimum_required(VERSION 3.12)
-project(cPlayground VERSION 0.1.0 DESCRIPTION "C Playground" LANGUAGES C)
+project(
+  cPlayground
+  VERSION 0.1.0
+  DESCRIPTION "C Playground"
+  LANGUAGES C)
 
 # =============================
 # Project-wide setup
@@ -26,7 +30,9 @@ if(NOT isMultiConfig)
   set(allowableBuildTypes Debug Release RelWithDebInfo)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "${allowableBuildTypes}")
   if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug CACHE STRING "" FORCE)
+    set(CMAKE_BUILD_TYPE
+        Debug
+        CACHE STRING "" FORCE)
   elseif(NOT CMAKE_BUILD_TYPE IN_LIST allowableBuildTypes)
     message(FATAL_ERROR "Invalid build type: ${CMAKE_BUILD_TYPE}")
   endif()
@@ -38,13 +44,8 @@ elseif("${CMAKE_C_COMPILER_ID}" MATCHES "Clang")
   add_compile_options(-fcolor-diagnostics)
 endif()
 
-set(C_PLAYGROUND_C_FLAGS_COMMON
-    -Wall
-    -Wextra
-    -Werror
-    -Wunreachable-code
-    -Wformat=2
-    -DUNIX)
+set(C_PLAYGROUND_C_FLAGS_COMMON -Wall -Wextra -Werror -Wunreachable-code
+                                -Wformat=2 -DUNIX)
 if(C_PLAYGROUND_ENABLE_WERROR)
   list(APPEND C_PLAYGROUND_C_FLAGS_COMMON -Werror)
 endif()
@@ -60,11 +61,14 @@ add_subdirectory(dependencies)
 add_subdirectory(src)
 
 if(C_PLAYGROUND_USE_VALGRIND)
-  add_custom_target(runTests
-                    COMMAND CK_FORK=no valgrind
-                            --error-exitcode=1
-                            --leak-check=full $<TARGET_FILE:cPlaygroundTests>
-                    DEPENDS cPlaygroundTests)
+  add_custom_target(
+    runTests
+    COMMAND CK_FORK=no valgrind --error-exitcode=1 --leak-check=full
+            $<TARGET_FILE:cPlaygroundTests>
+    DEPENDS cPlaygroundTests)
 else()
-  add_custom_target(runTests COMMAND cPlaygroundTests DEPENDS cPlaygroundTests)
+  add_custom_target(
+    runTests
+    COMMAND cPlaygroundTests
+    DEPENDS cPlaygroundTests)
 endif()
