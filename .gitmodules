@@ -1,5 +1,5 @@
 [submodule "1377667"]
-	path = simple-hash
+	path = submodules/simple-hash
 	url = https://gist.github.com/1377667.git
 [submodule "submodules/run-clang-format"]
 	path = submodules/run-clang-format
