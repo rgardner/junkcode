@@ -22,6 +22,17 @@ def build(c, release=False, verbose=False):
 
 
 @task
+def test(c, release=False, verbose=False):
+    with c.cd(str(get_source_dir())):
+        args = ["cargo", "test"]
+        if release:
+            args.append("--release")
+        if verbose:
+            args.append("--verbose")
+        c.run(" ".join(args))
+
+
+@task
 def run(c, bin, release=False):
     with c.cd(str(get_source_dir())):
         args = ["cargo", "run", "--bin", bin]

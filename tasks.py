@@ -36,11 +36,11 @@ def test(c, release=False):
 
 
 @task
-def format(c, release=False):
-    c_playground_tasks.format(c, release)
-    cpp_playground_tasks.format(c, release)
-    rust_playground_tasks.format(c)
-    python_playground_tasks.format(c)
+def fmt(c, release=False):
+    c_playground_tasks.fmt(c, release)
+    cpp_playground_tasks.fmt(c, release)
+    rust_playground_tasks.fmt(c)
+    python_playground_tasks.fmt(c)
 
 
 @task
@@ -55,7 +55,7 @@ ns = Collection()
 ns.add_task(setup)
 ns.add_task(build)
 ns.add_task(test)
-ns.add_task(format)
+ns.add_task(fmt)
 ns.add_task(lint)
 ns.add_collection(c_playground_tasks, name="c_playground")
 ns.add_collection(cpp_playground_tasks, name="cpp_playground")

@@ -27,7 +27,7 @@ START_TEST(signal_spawn_child_test) {
     // This is the child process
     ck_assert(true);
   } else if (fork_result < 0) {
-    ck_abort_msg(strerror(errno));
+    ck_abort_msg("%s", strerror(errno));
   } else {
     // This is the parent process
     // nothing to do here

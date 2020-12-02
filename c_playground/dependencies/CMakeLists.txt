@@ -4,7 +4,7 @@ fetchcontent_declare(check
                      GIT_REPOSITORY
                      https://github.com/libcheck/check.git
                      GIT_TAG
-                     0b80af232b9d899f876faf3930093d0a3b19f378)
+                     0.15.2)
 
 fetchcontent_getproperties(check)
 if(NOT check_POPULATED)
