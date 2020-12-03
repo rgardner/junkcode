@@ -20,7 +20,7 @@ if(MSVC)
     CppPlayground_main PRIVATE /W4 # provides lint-like warnings
                                /permissive- # specify standards conformance
   )
-  if(INTERVIEW_PREP_ENABLE_WERROR)
+  if(CPP_PLAYGROUND_ENABLE_WERROR)
     target_compile_options(CppPlayground_main PRIVATE /WX)
   endif()
 else()
@@ -40,7 +40,7 @@ else()
             -Wpedantic # warn if non-standard C++ is used
             -Wunused # warn on anything being unused
   )
-  if(INTERVIEW_PREP_ENABLE_WERROR)
+  if(CPP_PLAYGROUND_ENABLE_WERROR)
     target_compile_options(CppPlayground_main PRIVATE -Werror)
   endif()
 endif()

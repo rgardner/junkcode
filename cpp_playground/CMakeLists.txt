@@ -56,6 +56,6 @@ add_subdirectory(src)
 # Custom targets
 # =============================
 add_custom_target(
-  run
+  runTests
   COMMAND CppPlayground::main --use-colour yes
   DEPENDS CppPlayground::main)

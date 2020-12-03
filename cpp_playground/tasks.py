@@ -97,7 +97,7 @@ def build(c, release=False, lint=False):
 def test(c, release=False):
     build_type = BuildType.Release if release else BuildType.Debug
     build_dir = get_platform_build_path(build_type)
-    c.run(f"cmake --build {build_dir} --target run", pty=sys.stdout.isatty())
+    c.run(f"cmake --build {build_dir} --target runTests", pty=sys.stdout.isatty())
 
 
 @task
