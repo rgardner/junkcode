@@ -47,36 +47,42 @@ add_library(CppRust_cpprust STATIC src/blobstore.cpp)
 target_include_directories(
   CppRust_cpprust PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include
                          ${CMAKE_CURRENT_LIST_DIR}/..)
+
+set(cargoTargetDir ${CMAKE_CURRENT_BINARY_DIR}/rust)
 add_custom_command(
   TARGET CppRust_cpprust
   PRE_LINK
-  BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/rust/debug/libcpprust.a
-  COMMAND CARGO_TARGET_DIR=${CMAKE_CURRENT_BINARY_DIR}/rust cargo build --verbose
+  BYPRODUCTS ${cargoTargetDir}/debug/libcpprust.a
+  COMMAND CARGO_TARGET_DIR=${CMAKE_CURRENT_BINARY_DIR}/rust cargo build
   WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
 add_custom_command(
   TARGET CppRust_cpprust
   PRE_LINK
-  BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/rust/release/libcpprust.a
+  BYPRODUCTS ${cargoTargetDir}/release/libcpprust.a
   COMMAND CARGO_TARGET_DIR=${CMAKE_CURRENT_BINARY_DIR}/rust cargo build --release
-          --verbose
   WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
 
 target_link_libraries(
   CppRust_cpprust
   PUBLIC CppRust::cpprust::cpp_gen debug
-         ${CMAKE_CURRENT_BINARY_DIR}/rust/debug/libcpprust.a optimized
-         ${CMAKE_CURRENT_BINARY_DIR}/rust/release/libcpprust.a)
+         ${cargoTargetDir}/debug/libcpprust.a optimized
+         ${cargoTargetDir}/release/libcpprust.a)
 
+# =============================
+# Testing
+# =============================
 add_executable(CppRust_cpprust_cpp_test src/blobstore_test.cpp)
 target_include_directories(CppRust_cpprust_cpp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/include ${includeDir})
 target_link_libraries(CppRust_cpprust_cpp_test gtest_main CppRust_cpprust)
 gtest_discover_tests(CppRust_cpprust_cpp_test)
 
-add_test(NAME rustTestDebug
+add_test(NAME RustTestDebug
          COMMAND cargo test
          CONFIGURATIONS Debug ""
          WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
-add_test(NAME rustTestRelease
+
+add_test(NAME RustTestRelease
          COMMAND cargo test --release
          CONFIGURATIONS Release RelWithDebInfo
          WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+set_tests_properties(RustTestDebug RustTestRelease PROPERTIES ENVIRONMENT "CARGO_TARGET_DIR=${cargoTargetDir}")

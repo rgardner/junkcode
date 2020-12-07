@@ -24,6 +24,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON) # use folders in IDEs
 # Restrict valid build types for non-multi-config generators, e.g. cannot
 # accidently use build type 'Dbg' with Ninja.
 get_property(isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+set(CMAKE_DEFAULT_BUILD_TYPE Debug)
 if(NOT isMultiConfig)
   set(allowableBuildTypes Debug Release RelWithDebInfo)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "${allowableBuildTypes}")

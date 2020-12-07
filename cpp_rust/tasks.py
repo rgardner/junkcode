@@ -10,7 +10,7 @@ THIS_DIR = pathlib.Path(__file__).absolute().parent
 def setup(ctx):
     # type: (invoke.Context) -> None
     ctx.run(
-        "cmake -Bbuild -S. -GNinja -DCMAKE_BUILD_TYPE=Debug", pty=sys.stdout.isatty()
+        "cmake -Bbuild -S. -G'Ninja Multi-Config'", pty=sys.stdout.isatty(),
     )
 
 
