@@ -36,6 +36,12 @@ mod ffi {
     }
 }
 
+impl ffi::Chunk {
+    fn new(bytes: Vec<u8>) -> Self {
+        Self { bytes }
+    }
+}
+
 pub fn new_multi_buf(chunks: Vec<ffi::Chunk>) -> ffi::MultiBuf {
     ffi::MultiBuf::new(chunks)
 }
@@ -58,7 +64,10 @@ mod tests {
 
     #[test]
     fn test_next_chunk() {
-        let mut buf = MultiBuf::new(vec![vec![1, 2], vec![3, 4]]);
+        let mut buf = ffi::MultiBuf::new(vec![
+            ffi::Chunk::new(vec![1, 2]),
+            ffi::Chunk::new(vec![3, 4]),
+        ]);
         let chunk1 = next_chunk(&mut buf);
         assert_eq!(chunk1, vec![1, 2]);
 

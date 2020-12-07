@@ -59,8 +59,3 @@ add_custom_target(
   run
   COMMAND CppRust_main
   DEPENDS CppRust_main)
-
-add_custom_target(
-  runTests
-  COMMAND CppRust::cpprust_test --use-colour yes
-  DEPENDS CppRust::cpprust_test)

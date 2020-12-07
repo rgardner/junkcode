@@ -1,3 +1,5 @@
+include(GoogleTest)
+
 # =============================
 # Generate C++ bindings
 # =============================
@@ -64,3 +66,17 @@ target_link_libraries(
   PUBLIC CppRust::cpprust::cpp_gen debug
          ${CMAKE_CURRENT_BINARY_DIR}/rust/debug/libcpprust.a optimized
          ${CMAKE_CURRENT_BINARY_DIR}/rust/release/libcpprust.a)
+
+add_executable(CppRust_cpprust_cpp_test src/blobstore_test.cpp)
+target_include_directories(CppRust_cpprust_cpp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/include ${includeDir})
+target_link_libraries(CppRust_cpprust_cpp_test gtest_main CppRust_cpprust)
+gtest_discover_tests(CppRust_cpprust_cpp_test)
+
+add_test(NAME rustTestDebug
+         COMMAND cargo test
+         CONFIGURATIONS Debug ""
+         WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+add_test(NAME rustTestRelease
+         COMMAND cargo test --release
+         CONFIGURATIONS Release RelWithDebInfo
+         WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})

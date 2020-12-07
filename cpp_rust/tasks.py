@@ -1,6 +1,9 @@
+import pathlib
 import sys
 
 import invoke
+
+THIS_DIR = pathlib.Path(__file__).absolute().parent
 
 
 @invoke.task
@@ -23,7 +26,8 @@ def test(ctx, release=True):
     # type: (invoke.Context, bool) -> None
     config = "Release" if release else "Debug"
     ctx.run(
-        f"cmake --build build --target runTests --config {config}",
+        f"cmake --build build --target test --config {config}",
+        env={"CTEST_OUTPUT_ON_FAILURE": "1"},
         pty=sys.stdout.isatty(),
     )
 
@@ -33,7 +37,7 @@ def run(ctx, release=False):
     # type: (invoke.Context, bool) -> None
     config = "Release" if release else "Debug"
     ctx.run(
-        f"cmake --build build --target run --config {config}", pty=sys.stdout.isatty()
+        f"cmake --build build --target run --config {config}", pty=sys.stdout.isatty(),
     )
 
 
