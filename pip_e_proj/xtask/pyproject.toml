@@ -1,0 +1,10 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.mypy]
+files = ["../x.py", "xtask"]
+
+[[tool.mypy.overrides]]
+module = ["argcomplete", "pylint.*"]
+ignore_missing_imports = true
