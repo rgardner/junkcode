@@ -31,7 +31,7 @@ def test(c):
 @task
 def fmt(c, check=False):
     with c.cd(str(get_source_dir())):
-        black_args = ["pipenv", "run", "black", "--target-version", "py38", "."]
+        black_args = ["pipenv", "run", "black", "--target-version", "py39", "."]
         if check:
             black_args.append("--check")
         c.run(" ".join(black_args))
